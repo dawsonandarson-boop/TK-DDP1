@@ -1,0 +1,1 @@
+"""Akses penyimpanan data aplikasi."""

@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Moodify{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <!-- TODO: Buat kerangka header, navigasi, area pesan, dan footer bersama. -->
+  <main>{% block content %}{% endblock %}</main>
+</body>
+</html>

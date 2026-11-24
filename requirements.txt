@@ -1,0 +1,2 @@
+Flask>=3.0,<4.0
+# TODO: Tambahkan dependensi database/API setelah pilihan teknologinya disepakati.
