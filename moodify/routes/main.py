@@ -1,5 +1,6 @@
 """Route halaman. Tahap ini memakai data contoh, belum memanggil API musik."""
 from flask import Blueprint, render_template, request
+from moodify.services.search_service import search_songs
 
 main_bp = Blueprint("main", __name__)
 
@@ -13,29 +14,13 @@ def home():
 def search():
     query = ""
     results = []
+    error = None
 
     if request.method == "POST":
         query = request.form.get("query", "").strip()
+        results, error = search_songs(query)
 
-        # Data contoh sementara supaya alur form dan halaman hasil bisa dipelajari.
-        # Tahap berikutnya, data ini akan diganti hasil dari Deezer/iTunes.
-        demo_songs = [
-            {"title": "Dekat di Hati", "artist": "RAN", "album": "Hari Baru"},
-            {"title": "Evaluasi", "artist": "Hindia", "album": "Menari Dengan Bayangan"},
-            {"title": "Sorai", "artist": "Nadin Amizah", "album": "Selamat Ulang Tahun"},
-            {"title": "Akad", "artist": "Payung Teduh", "album": "Ruang Tunggu"},
-        ]
-
-        # Pencocokan sederhana tanpa membedakan huruf besar/kecil.
-        if query:
-            normalized_query = query.casefold()
-            results = [
-                song for song in demo_songs
-                if normalized_query in song["title"].casefold()
-                or normalized_query in song["artist"].casefold()
-            ]
-
-    return render_template("search_results.html", results=results, query=query)
+    return render_template("search_results.html", results=results, query=query, error=error)
 
 
 @main_bp.get("/recommend")

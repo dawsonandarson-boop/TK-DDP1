@@ -152,7 +152,7 @@ Pembagian ini bisa diubah sesuai kemampuan anggota. Sepakati bentuk data lagu da
 ## Konsep Moodify yang perlu dijaga
 
 - Pencarian langsung dan rekomendasi katalog adalah dua alur berbeda.
-- Hasil Deezer/iTunes tidak otomatis disimpan ke katalog lokal Moodify.
+- Hasil pencarian iTunes tidak otomatis disimpan ke katalog lokal Moodify.
 - Gemini boleh membantu memahami prompt pencarian dan membuat pesan motivasi jika diaktifkan.
 - Skor rekomendasi katalog dihitung oleh aturan Moodify sendiri, tanpa AI atau API eksternal.
 - Favorit dan riwayat dikaitkan dengan sesi browser; aplikasi tidak memakai akun pengguna.

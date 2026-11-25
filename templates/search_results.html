@@ -15,16 +15,29 @@
   <section class="results" aria-label="Daftar hasil pencarian">
     {% for song in results %}
       <article class="song-card">
-        <div class="song-icon" aria-hidden="true">♪</div>
+        {% if song.cover_url %}
+          <img class="song-cover" src="{{ song.cover_url }}" alt="Sampul album {{ song.album }}">
+        {% else %}
+          <div class="song-icon" aria-hidden="true">♪</div>
+        {% endif %}
         <div>
           <h2>{{ song.title }}</h2>
           <p>{{ song.artist }} <span>·</span> {{ song.album }}</p>
+          {% if song.preview_url %}
+            <audio controls preload="none" src="{{ song.preview_url }}">Browser kamu tidak mendukung pemutar audio.</audio>
+            <small class="attribution">Preview provided courtesy of iTunes</small>
+          {% endif %}
+          {% if song.listen_url %}
+            <a class="listen-link" href="{{ song.listen_url }}" target="_blank" rel="noopener noreferrer">Buka di iTunes</a>
+          {% endif %}
         </div>
       </article>
     {% endfor %}
   </section>
+{% elif error %}
+  <p class="empty-state">{{ error }}</p>
 {% elif query %}
-  <p class="empty-state">Belum ada lagu contoh yang cocok. Coba judul seperti “Sorai” atau artis seperti “Hindia”.</p>
+  <p class="empty-state">Tidak ada hasil yang cocok. Coba judul lagu atau nama artis lain.</p>
 {% endif %}
 
 <a class="back-link" href="{{ url_for('main.home') }}">← Kembali ke beranda</a>

@@ -18,9 +18,13 @@ button:hover { background: #5331c3; }
 .results { display: grid; gap: 12px; }
 .song-card { display: flex; align-items: center; gap: 15px; padding: 16px; background: #fff; border: 1px solid #eceaf2; border-radius: 13px; }
 .song-icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 11px; background: #eee9ff; color: #6946d9; font-size: 1.4rem; }
+.song-cover { width: 64px; height: 64px; flex: 0 0 64px; border-radius: 9px; object-fit: cover; }
 .song-card h2 { margin: 0 0 5px; font-size: 1.05rem; }
 .song-card p, .empty-state { margin: 0; color: #777588; }
 .song-card p span { padding: 0 4px; }
+.song-card audio { display: block; width: min(300px, 100%); height: 36px; margin-top: 10px; }
+.attribution { display: block; margin-top: 3px; color: #777588; }
+.listen-link { display: inline-block; margin-top: 8px; color: #6946d9; font-size: .9rem; font-weight: 700; }
 .empty-state { padding: 18px; background: #fff; border-radius: 12px; line-height: 1.5; }
 .back-link { display: inline-block; margin-top: 24px; color: #6946d9; font-weight: 700; text-decoration: none; }
 .site-footer { padding: 18px; border-top: 1px solid #eceaf2; background: #fff; color: #9290a0; text-align: center; font-size: .85rem; }
