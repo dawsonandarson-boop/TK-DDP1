@@ -80,7 +80,7 @@ Route menghubungkan URL dengan fungsi Python yang menyiapkan halaman. Route juga
 Service mengerjakan proses fitur. Tujuannya agar logika tidak menumpuk di route atau di dalam HTML.
 
 - **`services/__init__.py`** — Penanda bahwa folder `services` adalah package Python.
-- **`services/search_service.py`** — Tempat logika pencarian lagu berdasarkan judul, artis, prompt, atau mood. Rencana alurnya: cari di Deezer, lalu gunakan iTunes jika Deezer tidak memberi hasil. Prompt bebas dapat dibantu Gemini; jika Gemini tidak aktif, gunakan pencocokan kata sederhana.
+- **`services/search_service.py`** — Logika pencarian lagu melalui iTunes berdasarkan judul, artis, prompt, atau mood. Prompt bebas dapat dibantu Gemini; jika Gemini tidak aktif/gagal, aplikasi memakai pencocokan kata sederhana.
 - **`services/recommendation_service.py`** — Tempat analisis cerita pengguna untuk memperkirakan mood, energi, dan aktivitas, lalu mencocokkannya dengan lagu katalog dan menghitung skor.
 - **`services/lyrics_service.py`** — Tempat integrasi LRCLIB untuk mencari kutipan lirik singkat jika tersedia.
 - **`services/motivation_service.py`** — Tempat membuat pesan motivasi. Gemini bersifat opsional; aplikasi perlu punya pesan bawaan sebagai fallback.
@@ -104,7 +104,7 @@ Template adalah file HTML yang dirender Flask untuk ditampilkan di browser. Temp
 
 - **`base.html`** — Kerangka umum yang dapat dipakai bersama, misalnya navigasi, area konten, dan footer.
 - **`home.html`** — Beranda. Rencananya berisi form cari judul/artis, pencarian dengan prompt, pilihan mood, dan form cerita untuk rekomendasi.
-- **`search_results.html`** — Tempat menampilkan hasil pencarian Deezer/iTunes.
+- **`search_results.html`** — Tempat menampilkan hasil pencarian iTunes.
 - **`recommendations.html`** — Tempat menampilkan lagu katalog yang direkomendasikan, skor, dan alasan kecocokannya.
 - **`catalog.html`** — Tempat menampilkan dan menyaring lagu dari katalog lokal Moodify.
 - **`favorites.html`** — Tempat menampilkan lagu favorit pengguna.
@@ -117,7 +117,7 @@ Template adalah file HTML yang dirender Flask untuk ditampilkan di browser. Temp
 
 ### `data/`: rencana penyimpanan katalog
 
-- **`data/README.md`** — Catatan untuk menentukan format penyimpanan katalog lokal, misalnya SQLite, CSV, atau JSON, beserta field data yang diperlukan. Lagu katalog lokal harus dibedakan dari hasil pencarian Deezer/iTunes.
+- **`data/README.md`** — Catatan untuk menentukan format penyimpanan katalog lokal, misalnya SQLite, CSV, atau JSON, beserta field data yang diperlukan. Lagu katalog lokal harus dibedakan dari hasil pencarian iTunes.
 
 ## Cara kerja aplikasi
 
@@ -139,14 +139,14 @@ Browser menampilkan halaman
 
 Contoh alur rekomendasi: pengguna menulis cerita di beranda → route menerima cerita → recommendation service memperkirakan mood/energi/aktivitas → catalog repository menyediakan lagu lokal → Moodify menghitung skor → halaman rekomendasi menampilkan hasil.
 
-Contoh alur pencarian: pengguna memasukkan judul, artis, prompt, atau memilih mood → route meneruskan permintaan ke search service → service mencari melalui Deezer dan dapat mencoba iTunes sebagai fallback → hasil ditampilkan pada halaman pencarian. Hasil ini tidak otomatis menjadi bagian katalog lokal.
+Contoh alur pencarian: pengguna memasukkan judul, artis, prompt, atau memilih mood → route meneruskan permintaan ke search service → service mencari lagu melalui iTunes → hasil ditampilkan pada halaman pencarian. Hasil ini tidak otomatis menjadi bagian katalog lokal.
 
 ## Pembagian tugas untuk 3 orang
 
 Pembagian ini bisa diubah sesuai kemampuan anggota. Sepakati bentuk data lagu dan bentuk hasil antarbagian sebelum mulai menghubungkan kode.
 
 1. **Frontend dan alur halaman** — Mengisi template di `templates/`, CSS di `static/css/style.css`, serta menyepakati field form dengan route di `moodify/routes/main.py`.
-2. **Pencarian dan detail lagu** — Mengerjakan `search_service.py`, `lyrics_service.py`, `motivation_service.py`, serta tampilan hasil pencarian dan detail lagu. Pencarian menggunakan Deezer dengan fallback iTunes; Gemini opsional untuk membantu memahami prompt dan membuat pesan motivasi.
+2. **Pencarian dan detail lagu** — Mengerjakan `search_service.py`, `lyrics_service.py`, `motivation_service.py`, serta tampilan hasil pencarian dan detail lagu. Pencarian memakai iTunes; Gemini opsional untuk membantu memahami prompt. Pesan motivasi memakai pesan bawaan.
 3. **Katalog dan rekomendasi** — Menyepakati model lagu, menyiapkan katalog lokal, mengerjakan repository dan `recommendation_service.py`, serta halaman katalog, favorit, dan riwayat.
 
 ## Konsep Moodify yang perlu dijaga
