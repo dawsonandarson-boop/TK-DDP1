@@ -9,6 +9,14 @@ ITUNES_LOOKUP_URL = "https://itunes.apple.com/lookup"
 
 def _prompt_to_keywords(prompt):
     """Fallback lokal sederhana jika Gemini belum dikonfigurasi."""
+    normalized = prompt.casefold()
+    # Kalimat panjang tentang stres biasanya lebih cocok dicari sebagai musik santai.
+    if any(word in normalized for word in ("stress", "stres", "tenang", "santai", "relaks", "cemas")):
+        return "relaxing"
+    if any(word in normalized for word in ("semangat", "memotivasi", "motivasi", "olahraga")):
+        return "motivational"
+    if any(word in normalized for word in ("belajar", "kuliah", "fokus", "kerja")):
+        return "study music"
     ignored = {"lagu", "yang", "buat", "untuk", "aku", "saya", "ingin", "dong", "dengan", "suasana", "hati", "tentang"}
     words = [word.strip(".,!?;:") for word in prompt.split()]
     keywords = [word for word in words if word and word.casefold() not in ignored]
@@ -83,15 +91,21 @@ def _guess_mood(text):
 
 
 def search_songs(query, search_type="title_artist", selected_mood=""):
-    """Cari lagu dan kembalikan (daftar_lagu, pesan_error)."""
+    """Cari lagu dan kembalikan (daftar_lagu, pesan_error, info_prompt)."""
     query = query.strip()
     if not query:
-        return [], None
+        return [], None, None
 
     prompt_info = understand_prompt(query) if search_type == "prompt" else None
     search_term = prompt_info["keywords"] if prompt_info else query
     if selected_mood:
-        search_term = f"{selected_mood} {search_term}".strip()
+        mood_terms = {
+            "senang": "happy",
+            "sedih": "sad",
+            "tenang": "relaxing",
+            "semangat": "motivational",
+        }
+        search_term = f"{mood_terms.get(selected_mood, selected_mood)} {search_term}".strip()
     params = {
         "term": search_term,
         "media": "music",
@@ -105,9 +119,9 @@ def search_songs(query, search_type="title_artist", selected_mood=""):
         response.raise_for_status()
         payload = response.json()
     except requests.RequestException:
-        return [], "Layanan pencarian iTunes sedang tidak dapat dihubungi. Coba lagi nanti."
+        return [], "Layanan pencarian iTunes sedang tidak dapat dihubungi. Coba lagi nanti.", prompt_info
     except ValueError:
-        return [], "Respons dari layanan pencarian tidak dapat dibaca. Coba lagi nanti."
+        return [], "Respons dari layanan pencarian tidak dapat dibaca. Coba lagi nanti.", prompt_info
 
     songs = []
     for item in payload.get("results", []):
@@ -125,7 +139,7 @@ def search_songs(query, search_type="title_artist", selected_mood=""):
 
     for song in songs:
         song["prompt_info"] = prompt_info
-    return songs, None
+    return songs, None, prompt_info
 
 
 def get_song_detail(track_id):

@@ -17,15 +17,14 @@ def search():
     query = ""
     results = []
     error = None
-    prompt_info = None
 
     if request.method == "POST":
         query = request.form.get("query", "").strip()
         search_type = request.form.get("search_type", "title_artist")
         selected_mood = request.form.get("mood", "")
-        results, error = search_songs(query, search_type, selected_mood)
-        if search_type == "prompt" and results:
-            prompt_info = results[0].get("prompt_info")
+        results, error, prompt_info = search_songs(query, search_type, selected_mood)
+    else:
+        prompt_info = None
 
     return render_template(
         "search_results.html", results=results, query=query, error=error,
