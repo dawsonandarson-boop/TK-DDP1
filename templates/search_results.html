@@ -1,5 +1,31 @@
 {% extends "base.html" %}
 {% block title %}Hasil pencarian · Moodify{% endblock %}
 {% block content %}
-<!-- TODO: Tampilkan hasil Deezer/iTunes; bedakan dari lagu katalog lokal. -->
+<section class="intro">
+  <p class="eyebrow">HASIL PENCARIAN · DATA CONTOH</p>
+  <h1>Hasil lagu</h1>
+  {% if query %}
+    <p>Hasil untuk <strong>“{{ query }}”</strong></p>
+  {% else %}
+    <p>Masukkan judul lagu atau nama artis di beranda untuk mencari.</p>
+  {% endif %}
+</section>
+
+{% if results %}
+  <section class="results" aria-label="Daftar hasil pencarian">
+    {% for song in results %}
+      <article class="song-card">
+        <div class="song-icon" aria-hidden="true">♪</div>
+        <div>
+          <h2>{{ song.title }}</h2>
+          <p>{{ song.artist }} <span>·</span> {{ song.album }}</p>
+        </div>
+      </article>
+    {% endfor %}
+  </section>
+{% elif query %}
+  <p class="empty-state">Belum ada lagu contoh yang cocok. Coba judul seperti “Sorai” atau artis seperti “Hindia”.</p>
+{% endif %}
+
+<a class="back-link" href="{{ url_for('main.home') }}">← Kembali ke beranda</a>
 {% endblock %}

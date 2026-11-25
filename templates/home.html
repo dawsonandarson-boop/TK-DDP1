@@ -1,5 +1,17 @@
 {% extends "base.html" %}
 {% block title %}Beranda · Moodify{% endblock %}
 {% block content %}
-<!-- TODO: Buat form cari judul/artis, prompt, pilihan mood, dan cerita rekomendasi. -->
+<section class="intro">
+  <p class="eyebrow">MOODIFY · TAHAP 1</p>
+  <h1>Cari lagu favoritmu</h1>
+  <p>Masukkan judul lagu atau nama artis. Untuk tahap belajar ini, hasilnya berasal dari data contoh.</p>
+</section>
+
+<form class="search-form" action="{{ url_for('main.search') }}" method="post">
+  <label for="query">Judul lagu atau nama artis</label>
+  <div class="search-row">
+    <input id="query" name="query" type="search" placeholder="Contoh: Hindia atau Evaluasi" required>
+    <button type="submit">Cari lagu</button>
+  </div>
+</form>
 {% endblock %}

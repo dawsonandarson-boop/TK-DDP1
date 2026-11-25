@@ -1,1 +1,27 @@
-/* TODO: Tim frontend menentukan sistem warna, tipografi, layout, dan responsivitas. */
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; background: #f7f6fb; color: #242238; font-family: Arial, sans-serif; }
+.site-header { min-height: 70px; padding: 16px max(6vw, 22px); display: flex; align-items: center; justify-content: space-between; background: #fff; border-bottom: 1px solid #eceaf2; }
+.brand { color: #6946d9; font-size: 1.3rem; font-weight: 800; text-decoration: none; }
+.stage-label { color: #777588; font-size: .9rem; }
+.page-content { width: min(760px, 88vw); min-height: calc(100vh - 126px); margin: 0 auto; padding: 70px 0; }
+.intro { margin-bottom: 30px; }
+.eyebrow { color: #7659d7; font-size: .75rem; font-weight: 700; letter-spacing: .13em; }
+h1 { margin: 10px 0; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -.04em; }
+.intro p:not(.eyebrow) { color: #777588; line-height: 1.6; }
+.search-form { padding: 24px; background: #fff; border: 1px solid #eceaf2; border-radius: 16px; }
+.search-form label { display: block; margin-bottom: 10px; font-weight: 700; }
+.search-row { display: flex; gap: 10px; }
+.search-row input { flex: 1; min-width: 0; padding: 13px; border: 1px solid #dcd9e7; border-radius: 9px; font: inherit; }
+.search-row input:focus { outline: 2px solid #cfc2ff; border-color: #8a6beb; }
+button { padding: 0 19px; border: 0; border-radius: 9px; background: #6946d9; color: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+button:hover { background: #5331c3; }
+.results { display: grid; gap: 12px; }
+.song-card { display: flex; align-items: center; gap: 15px; padding: 16px; background: #fff; border: 1px solid #eceaf2; border-radius: 13px; }
+.song-icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 11px; background: #eee9ff; color: #6946d9; font-size: 1.4rem; }
+.song-card h2 { margin: 0 0 5px; font-size: 1.05rem; }
+.song-card p, .empty-state { margin: 0; color: #777588; }
+.song-card p span { padding: 0 4px; }
+.empty-state { padding: 18px; background: #fff; border-radius: 12px; line-height: 1.5; }
+.back-link { display: inline-block; margin-top: 24px; color: #6946d9; font-weight: 700; text-decoration: none; }
+.site-footer { padding: 18px; border-top: 1px solid #eceaf2; background: #fff; color: #9290a0; text-align: center; font-size: .85rem; }
+@media (max-width: 560px) { .page-content { padding-top: 42px; } .search-row { flex-direction: column; } .search-row button { min-height: 44px; } }

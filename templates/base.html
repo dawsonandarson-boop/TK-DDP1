@@ -7,7 +7,11 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-  <!-- TODO: Buat kerangka header, navigasi, area pesan, dan footer bersama. -->
-  <main>{% block content %}{% endblock %}</main>
+  <header class="site-header">
+    <a class="brand" href="{{ url_for('main.home') }}">♪ Moodify</a>
+    <span class="stage-label">Kerangka belajar</span>
+  </header>
+  <main class="page-content">{% block content %}{% endblock %}</main>
+  <footer class="site-footer">Tahap awal · hasil pencarian masih menggunakan data contoh</footer>
 </body>
 </html>

@@ -1,5 +1,5 @@
-"""Route halaman. Hubungkan tiap form dengan service saat fitur dikerjakan."""
-from flask import Blueprint, render_template
+"""Route halaman. Tahap ini memakai data contoh, belum memanggil API musik."""
+from flask import Blueprint, render_template, request
 
 main_bp = Blueprint("main", __name__)
 
@@ -9,10 +9,33 @@ def home():
     return render_template("home.html")
 
 
-@main_bp.get("/search")
+@main_bp.route("/search", methods=["GET", "POST"])
 def search():
-    # TODO: Terima query judul/artis, prompt, atau mood dan panggil search_service.
-    return render_template("search_results.html", results=None)
+    query = ""
+    results = []
+
+    if request.method == "POST":
+        query = request.form.get("query", "").strip()
+
+        # Data contoh sementara supaya alur form dan halaman hasil bisa dipelajari.
+        # Tahap berikutnya, data ini akan diganti hasil dari Deezer/iTunes.
+        demo_songs = [
+            {"title": "Dekat di Hati", "artist": "RAN", "album": "Hari Baru"},
+            {"title": "Evaluasi", "artist": "Hindia", "album": "Menari Dengan Bayangan"},
+            {"title": "Sorai", "artist": "Nadin Amizah", "album": "Selamat Ulang Tahun"},
+            {"title": "Akad", "artist": "Payung Teduh", "album": "Ruang Tunggu"},
+        ]
+
+        # Pencocokan sederhana tanpa membedakan huruf besar/kecil.
+        if query:
+            normalized_query = query.casefold()
+            results = [
+                song for song in demo_songs
+                if normalized_query in song["title"].casefold()
+                or normalized_query in song["artist"].casefold()
+            ]
+
+    return render_template("search_results.html", results=results, query=query)
 
 
 @main_bp.get("/recommend")
