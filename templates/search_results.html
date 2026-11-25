@@ -2,7 +2,7 @@
 {% block title %}Hasil pencarian · Moodify{% endblock %}
 {% block content %}
 <section class="intro">
-  <p class="eyebrow">HASIL PENCARIAN · DATA CONTOH</p>
+  <p class="eyebrow">HASIL PENCARIAN · ITUNES</p>
   <h1>Hasil lagu</h1>
   {% if query %}
     <p>Hasil untuk <strong>“{{ query }}”</strong></p>
@@ -10,6 +10,14 @@
     <p>Masukkan judul lagu atau nama artis di beranda untuk mencari.</p>
   {% endif %}
 </section>
+
+{% if prompt_info %}
+  <p class="prompt-note">
+    Kata kunci pencarian: <strong>{{ prompt_info.keywords }}</strong>
+    · Mood: {{ prompt_info.mood }} · Energi: {{ prompt_info.energy }}
+    {% if prompt_info.used_gemini %}<span>(dibantu Gemini)</span>{% else %}<span>(fallback lokal)</span>{% endif %}
+  </p>
+{% endif %}
 
 {% if results %}
   <section class="results" aria-label="Daftar hasil pencarian">
@@ -29,6 +37,9 @@
           {% endif %}
           {% if song.listen_url %}
             <a class="listen-link" href="{{ song.listen_url }}" target="_blank" rel="noopener noreferrer">Buka di iTunes</a>
+          {% endif %}
+          {% if song.id %}
+            <a class="listen-link" href="{{ url_for('main.song_detail', song_id=song.id) }}">Lihat detail lagu</a>
           {% endif %}
         </div>
       </article>

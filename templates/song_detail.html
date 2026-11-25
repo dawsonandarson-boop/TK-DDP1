@@ -1,5 +1,31 @@
 {% extends "base.html" %}
 {% block title %}Detail lagu · Moodify{% endblock %}
 {% block content %}
-<!-- TODO: Detail lagu, preview jika ada, tautan penuh, lirik, dan pesan motivasi. -->
+{% if error %}
+  <p class="empty-state">{{ error }}</p>
+{% elif song %}
+  <section class="song-detail">
+    <p class="eyebrow">DETAIL LAGU · {{ song.source }}</p>
+    {% if song.cover_url %}<img class="detail-cover" src="{{ song.cover_url }}" alt="Sampul album {{ song.album }}">{% endif %}
+    <h1>{{ song.title }}</h1>
+    <p class="detail-meta">{{ song.artist }} · {{ song.album }}</p>
+    {% if song.genre %}<p>Genre: {{ song.genre }}</p>{% endif %}
+    {% if song.release_date %}<p>Rilis: {{ song.release_date }}</p>{% endif %}
+    {% if song.preview_url %}
+      <audio controls preload="none" src="{{ song.preview_url }}">Browser kamu tidak mendukung pemutar audio.</audio>
+      <small class="attribution">Preview provided courtesy of iTunes</small>
+    {% endif %}
+    {% if song.listen_url %}<p><a class="listen-link" href="{{ song.listen_url }}" target="_blank" rel="noopener noreferrer">Dengarkan lagu penuh di iTunes</a></p>{% endif %}
+  </section>
+  <section class="detail-extra">
+    <h2>Kutipan lirik</h2>
+    {% if lyrics %}<blockquote>{{ lyrics }}</blockquote><small>Sumber: LRCLIB</small>
+    {% else %}<p class="muted">Kutipan lirik belum tersedia.</p>{% endif %}
+  </section>
+  <section class="detail-extra">
+    <h2>Pesan buat kamu</h2>
+    <p>{{ message }}</p>
+  </section>
+{% endif %}
+<a class="back-link" href="{{ url_for('main.home') }}">← Kembali ke beranda</a>
 {% endblock %}

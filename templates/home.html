@@ -4,13 +4,25 @@
 <section class="intro">
   <p class="eyebrow">MOODIFY · TAHAP 1</p>
   <h1>Cari lagu favoritmu</h1>
-  <p>Masukkan judul lagu atau nama artis. Untuk tahap belajar ini, hasilnya berasal dari data contoh.</p>
+  <p>Cari langsung berdasarkan judul/artis, atau tulis prompt singkat tentang lagu yang kamu inginkan.</p>
 </section>
 
 <form class="search-form" action="{{ url_for('main.search') }}" method="post">
-  <label for="query">Judul lagu atau nama artis</label>
+  <label for="query">Kata pencarian atau prompt</label>
+  <select id="search_type" name="search_type">
+    <option value="title_artist">Judul lagu atau nama artis</option>
+    <option value="prompt">Prompt bebas</option>
+  </select>
+  <label for="mood">Mood (opsional)</label>
+  <select id="mood" name="mood">
+    <option value="">Bebaskan dari prompt</option>
+    <option value="senang">Senang</option>
+    <option value="sedih">Sedih</option>
+    <option value="tenang">Tenang</option>
+    <option value="semangat">Semangat</option>
+  </select>
   <div class="search-row">
-    <input id="query" name="query" type="search" placeholder="Contoh: Hindia atau Evaluasi" required>
+    <input id="query" name="query" type="search" placeholder="Contoh: Hindia atau lagu santai untuk belajar" required>
     <button type="submit">Cari lagu</button>
   </div>
 </form>

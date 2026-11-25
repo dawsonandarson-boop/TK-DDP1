@@ -4,4 +4,5 @@ import os
 
 class Config:
     SECRET_KEY = os.getenv("MOODIFY_SECRET_KEY", "development-only-change-me")
-    # TODO: Tambahkan konfigurasi database dan Gemini bila sudah disepakati tim.
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+    GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")

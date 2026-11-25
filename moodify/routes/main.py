@@ -1,6 +1,8 @@
-"""Route halaman. Tahap ini memakai data contoh, belum memanggil API musik."""
+"""Route halaman Moodify."""
 from flask import Blueprint, render_template, request
-from moodify.services.search_service import search_songs
+from moodify.services.search_service import search_songs, get_song_detail
+from moodify.services.lyrics_service import find_lyrics_snippet
+from moodify.services.motivation_service import create_message
 
 main_bp = Blueprint("main", __name__)
 
@@ -15,12 +17,20 @@ def search():
     query = ""
     results = []
     error = None
+    prompt_info = None
 
     if request.method == "POST":
         query = request.form.get("query", "").strip()
-        results, error = search_songs(query)
+        search_type = request.form.get("search_type", "title_artist")
+        selected_mood = request.form.get("mood", "")
+        results, error = search_songs(query, search_type, selected_mood)
+        if search_type == "prompt" and results:
+            prompt_info = results[0].get("prompt_info")
 
-    return render_template("search_results.html", results=results, query=query, error=error)
+    return render_template(
+        "search_results.html", results=results, query=query, error=error,
+        prompt_info=prompt_info,
+    )
 
 
 @main_bp.get("/recommend")
@@ -49,5 +59,15 @@ def history():
 
 @main_bp.get("/song/<int:song_id>")
 def song_detail(song_id):
-    # TODO: Ambil lagu dan siapkan detail, preview, lirik, serta tautan dengar.
-    return render_template("song_detail.html", song=None, song_id=song_id)
+    song, error = get_song_detail(song_id)
+    lyrics = None
+    message = None
+    if song:
+        lyrics = find_lyrics_snippet(
+            song["title"], song["artist"], song["album"], song["duration"]
+        )
+        message = create_message("")
+    return render_template(
+        "song_detail.html", song=song, song_id=song_id, lyrics=lyrics,
+        message=message, error=error,
+    )
