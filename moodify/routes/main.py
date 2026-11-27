@@ -3,16 +3,24 @@ from flask import Blueprint, render_template, request
 from moodify.services.search_service import search_songs, get_song_detail
 from moodify.services.lyrics_service import find_lyrics_snippet
 from moodify.services.motivation_service import create_message
+"""
+Jadi Flask itu sebuah framework python yang digunakan untuk membuat sebuah web sederhana, dalam membuat sebuah web di Flask kita perlu untuk
+mendefinisikan sebuah varibel yang menjadi app menggunakan main_bp = Blueprint, membuat kelompok route bernama main, __name__ berguna untuk
+memberi tahu flask lokasi dari bluprint in. Ada beberapa fungsi yang cukup banyak digunakan dalam flask contohnya render_template untuk
+merender html yang diberikan, ada juga request yang digunakan untuk membuat http request dan juga response (form.get untuk mengambil req dari kita
+, ) 
+"""
+# mengambil fungsi dari file lain
 
-main_bp = Blueprint("main", __name__)
+main_bp = Blueprint("main", __name__) # membuat sebuah kelompok route bernama main.bp
 
 
-@main_bp.get("/")
+@main_bp.get("/") # endpoint root > menampilkan fitur yang ada secara visual
 def home():
     return render_template("home.html")
 
 
-@main_bp.route("/search", methods=["GET", "POST"])
+@main_bp.route("/search", methods=["GET", "POST"]) # endpoint search > untuk membuat sebuah request dari pengguna dan mersponse
 def search():
     query = ""
     results = []
@@ -22,7 +30,7 @@ def search():
         query = request.form.get("query", "").strip()
         search_type = request.form.get("search_type", "title_artist")
         selected_mood = request.form.get("mood", "")
-        results, error, prompt_info = search_songs(query, search_type, selected_mood)
+        results, error, prompt_info = search_songs(query, search_type, selected_mood) # menggunakan fungsi dari file search_servces.py
     else:
         prompt_info = None
 
@@ -56,7 +64,7 @@ def history():
     return render_template("history.html", entries=None)
 
 
-@main_bp.get("/song/<int:song_id>")
+@main_bp.get("/song/<int:song_id>") # endpoint search > untuk menyimpan pencarian kita menggunakan id yang unik
 def song_detail(song_id):
     song, error = get_song_detail(song_id)
     lyrics = None

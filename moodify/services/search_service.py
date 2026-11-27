@@ -3,6 +3,12 @@ import json
 import os
 import requests
 
+"""
+nah ini emang agak banyak tapi konsepnya masih bisa aku pahami. Url yang kita masukkan ke variabel itu digunakan sebagi api untuk menagmbil data
+music yang kita butuhkan. Lalu ada fungsi def _prompt_to_keywords(prompt): ini hanya digunakan jika kita belum menggunakan gemini api key untuk
+mendapatkan lagu yang kita butuhkan. Nah kalo bagian def understand_prompt(prompt): ini digunakan untuk mengirim ke gemini  
+"""
+
 ITUNES_SEARCH_URL = "https://itunes.apple.com/search"
 ITUNES_LOOKUP_URL = "https://itunes.apple.com/lookup"
 
